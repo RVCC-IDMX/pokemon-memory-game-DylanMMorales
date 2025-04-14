@@ -19,7 +19,7 @@ Built using vanilla JavaScript with ES Modules, HTML5, and CSS3, this game fetch
 
 <!-- ## 🚀 Live Demo
 
-Check out the live demo: [Pokémon Memory Game](https://your-pokemon-memory-game-url.netlify.app) -->
+Check out the live demo: [Pokémon Memory Game](https://rainbow-licorice-ee6e5a.netlify.app/) -->
 
 ## 🛠️ Technologies Used
 
@@ -61,7 +61,7 @@ Check out the live demo: [Pokémon Memory Game](https://your-pokemon-memory-game
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/pokemon-memory-game.git
+   git clone https://github.com/RVCC-IDMX/pokemon-memory-game-DylanMMorales.git
    cd pokemon-memory-game
    ```
 
@@ -155,4 +155,4 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-Developed with ❤️ by [Your Name]
+Developed with ❤️ by [Dylan Morales Murillo]
