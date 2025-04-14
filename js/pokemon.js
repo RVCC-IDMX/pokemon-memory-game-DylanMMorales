@@ -127,17 +127,24 @@ function findStat(stats, statName) {
 function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.replace('-', ' ').slice(1);
 }
-
-// Removed unnecessary functions:
-// - updatePokemonTypes
-// - populateTypeFilter
-// - filterPokemonByType
-// - catchPokemon
-// - updateCaughtCounter
-// - getPokemonCry
-
-// Export simplified functions for use in app.js
+async function fetchRandomPokemonPairs(count = 6) {
+  const list = [];
+  while (list.length < count) {
+    const pokemon = await fetchRandomPokemon();
+    const alreadyInList = list.some(p => p.name === pokemon.name);
+    if (!alreadyInList) {
+      list.push(pokemon);
+    }
+  }
+  const pairs = [...list, ...list];
+  for (let i = pairs.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [pairs[i], pairs[j]] = [pairs[j], pairs[i]];
+  }
+  return pairs;
+}
 export const PokemonService = {
   fetchRandomPokemon,
-  fetchMultipleRandomPokemon
+  fetchMultipleRandomPokemon,
+  fetchRandomPokemonPairs
 };

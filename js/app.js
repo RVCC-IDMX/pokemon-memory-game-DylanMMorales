@@ -13,7 +13,9 @@ const CARD_COUNT = 12;
 
 // Application State
 let cards = [];
-
+let selectedCards = [];
+let lockBoard = false;
+let matchedPairs = 0;
 // Debug flag - set to true to simulate slower loading
 const DEBUG_SHOW_SPINNER = false;
 const LOADING_DELAY = 4000; // 2 seconds delay
@@ -112,7 +114,7 @@ function createCardElement(index) {
 async function fetchAndAssignPokemon() {
   try {
     // Fetch multiple random Pokemon
-    const pokemonList = await PokemonService.fetchMultipleRandomPokemon(CARD_COUNT);
+    const pokemonList = await PokemonService.fetchRandomPokemonPairs(CARD_COUNT / 2);
 
     // If debug flag is on, add artificial delay to show the spinner
     if (DEBUG_SHOW_SPINNER) {
@@ -211,20 +213,42 @@ function assignPokemonToCard(card, pokemon) {
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/API/Element/classList | MDN: classList}
  */
 function handleCardClick(event) {
-  // Find the clicked card
+  if (lockBoard) {
+    return;
+  }
   let card = event.target;
   while (card && !card.classList.contains('card')) {
     card = card.parentElement;
   }
-
-  if (!card) {
+  if (!card || card.classList.contains('flipped') || selectedCards.includes(card)) {
     return;
   }
-
-  // Toggle card flip
-  card.classList.toggle('flipped');
+  card.classList.add('flipped');
+  selectedCards.push(card);
+  if (selectedCards.length === 2) {
+    lockBoard = true;
+    const [cardOne, cardTwo] = selectedCards;
+    const pokeOne = JSON.parse(cardOne.dataset.pokemon);
+    const pokeTwo = JSON.parse(cardTwo.dataset.pokemon);
+    if (pokeOne.name === pokeTwo.name) {
+      matchedPairs++;
+      selectedCards = [];
+      lockBoard = false;
+      if (matchedPairs === CARD_COUNT / 2) {
+        setTimeout(() => {
+          alert('🎉 You win! Game complete.');
+        }, 500);
+      }
+    } else {
+      setTimeout(() => {
+        cardOne.classList.remove('flipped');
+        cardTwo.classList.remove('flipped');
+        selectedCards = [];
+        lockBoard = false;
+      }, 1000);
+    }
+  }
 }
-
 /**
  * Set up event listeners
  *
